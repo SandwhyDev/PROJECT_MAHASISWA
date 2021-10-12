@@ -1,6 +1,7 @@
 const express = require("express")
 const cors = require("cors")
 const user = require("./routes/user_route")
+const bio = require("./routes/biodata_route")
 require("dotenv").config()
 
 const app = express()
@@ -14,6 +15,7 @@ app.use(express.json())
 
 //route
 app.use("/api", user)
+app.use("/api", bio)
 
 
 

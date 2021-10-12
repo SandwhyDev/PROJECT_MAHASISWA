@@ -66,7 +66,11 @@ user.post("/user_login", async (req,res)=>{
 
 user.get("/user_read", async (req,res)=>{
     try {
-        const result = await ps.user.findMany()
+        const result = await ps.user.findMany({
+            include : {
+                biodata : true
+            }
+        })
         res.json({
             success : true,
             data : result

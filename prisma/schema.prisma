@@ -9,10 +9,27 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
-model user{
+model User{
   id                Int         @id @default(autoincrement())
   email             String      @unique
   password          String
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
+
+  //relasi
+  biodata           Biodata?
+}
+model Biodata{
+  id                Int         @id @default(autoincrement())
+  nama_lengkap      String
+  alamat            String
+  telp              Int
+  jenis_kelamin     String
+  pendidikan        String
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  //relasi
+  user_id           Int         @unique
+  user              User        @relation(fields: [user_id], references:[id])
 }
