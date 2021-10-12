@@ -1,0 +1,24 @@
+{
+  "name": "project_belajar_git",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^3.2.1",
+    "cors": "^2.8.5",
+    "dot": "^1.1.3",
+    "dotenv": "^10.0.0",
+    "env": "0.0.2",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "prisma": "^3.2.1"
+  }
+}
