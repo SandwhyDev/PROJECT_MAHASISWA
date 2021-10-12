@@ -1,5 +1,6 @@
 const express = require('express');
 const ps = require('../prisma/connection');
+const { hashPassword, comparePassword } = require('../services/hash_services');
 
 const user = express.Router()
 
@@ -8,13 +9,52 @@ user.post("/user_register", async(req,res)=>{
         const data = await req.body
         const result = await ps.user.create({
             data : {
-                ...data
+                email : data.email,
+                password : hashPassword(data.password)
             }
         })
         res.json({
             success : true,
             msg : "berhasil register",
             data : result
+        })
+    } catch (error) {
+        res.json({
+            success : false,
+            error : error.message
+        })
+    }
+})
+
+user.post("/user_login", async (req,res)=>{
+    try {
+        const data = await req.body
+        const cekEmail = await ps.user.findUnique({
+            where : {
+                email : data.email
+            }
+        })
+        if(!cekEmail){
+            res.json({
+                success : false,
+                msg : "email salah"
+            })
+            return
+        }
+
+        const cekPassword = await comparePassword(data.password, cekEmail.password)
+
+        if(!cekPassword){
+            res.json({
+                success : false,
+                msg : "password salah"
+            })
+            return
+        }
+
+        res.json({
+            success : true,
+            msg : "berhasil login"
         })
     } catch (error) {
         res.json({
@@ -55,6 +95,7 @@ user.put("/user_update/:id", async (req,res)=>{
                 msg : "data tidak ditemukan ",
                 
             })
+            return
         }
         res.json({
             success : true,
@@ -83,6 +124,7 @@ user.delete("/user_delete/:id", async (req,res)=>{
                 msg  : "data tidak ditemukan",
                 
             })
+            return
         }
         res.json({
             success : true,
